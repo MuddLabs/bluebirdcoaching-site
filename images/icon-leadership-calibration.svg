@@ -1,5 +1,2 @@
-<!-- Lucide icon "trending-up" (lucide-static v1.77.0), ISC License, Copyright (c) 2026 Lucide Icons and Contributors. See LICENSE-lucide.txt -->
-<svg xmlns="http://www.w3.org/2000/svg" width="61" height="35" viewBox="1 6 22 12" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-  <path d="M16 7h6v6"/>
-  <path d="m22 7-8.5 8.5-5-5L2 17"/>
-</svg>
+<!-- Phosphor icon "trend-up" (light weight, @phosphor-icons/core v2.1.1), MIT License, Copyright (c) 2023 Phosphor Icons. See LICENSE-phosphor.txt -->
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 256 256" fill="#2E2F3F" aria-hidden="true"><path d="M238,56v64a6,6,0,0,1-12,0V70.48l-85.76,85.76a6,6,0,0,1-8.48,0L96,120.49,28.24,188.24a6,6,0,0,1-8.48-8.48l72-72a6,6,0,0,1,8.48,0L136,143.51,217.52,62H168a6,6,0,0,1,0-12h64A6,6,0,0,1,238,56Z"/></svg>
