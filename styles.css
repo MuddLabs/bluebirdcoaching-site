@@ -1,0 +1,603 @@
+/* Bluebird Coaching: static rebuild of the original Wix homepage.
+   Measurements follow the live Wix page (980 px content column). */
+
+:root {
+  --navy: #2e2f3f;
+  --grey-text: #767674;
+  --divider: #282626;
+
+  --panel-header: rgba(182, 195, 212, 0.59);
+  --panel-header-border: rgba(196, 205, 232, 0.46);
+  --panel-grey: rgba(218, 216, 216, 0.75);
+  --panel-lavender: rgba(196, 205, 232, 0.6);
+  --panel-white: rgba(255, 255, 255, 0.75);
+  --footer-band: rgba(202, 213, 229, 0.7);
+
+  /* Helvetica was a Wix-licensed web font; these system fonts match it closely. */
+  --helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --oswald: "Oswald", "Arial Narrow", sans-serif;
+  --almarai: "Almarai", var(--helvetica);
+  --futura: "Jost", Futura, "Century Gothic", sans-serif;
+  --madefor: "Wix Madefor Text", var(--helvetica);
+
+  --column: 980px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--helvetica);
+  color: #000;
+  background: #c3cddc; /* shown while the photo loads */
+}
+
+/* Feather photo fixed behind the whole page (works on phones too). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("images/background.jpg") center / cover no-repeat;
+}
+
+h2,
+h3,
+p,
+dl,
+dd {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.skip-link {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  transform: translate(-50%, -200%);
+  padding: 8px 14px;
+  background: #fff;
+  color: #116dff;
+  font-size: 14px;
+  z-index: 10;
+}
+
+.skip-link:focus {
+  transform: translate(-50%, 0);
+}
+
+/* ---------- Panels ---------- */
+
+.panel,
+.pair {
+  width: min(var(--column), calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.panel h2 {
+  font-family: var(--helvetica);
+  font-weight: 400;
+  font-size: 35px;
+  line-height: 49px;
+}
+
+/* ---------- Header ---------- */
+
+.panel--header {
+  padding: 51px 20px 60px;
+  text-align: center;
+  background: var(--panel-header);
+  border: 1px solid var(--panel-header-border);
+}
+
+.logo {
+  display: block;
+  width: 437px;
+  margin: 0 auto;
+}
+
+.tagline {
+  margin-top: 17px;
+  font-family: var(--oswald);
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 37px;
+  letter-spacing: 2.5px;
+  color: var(--navy);
+}
+
+.founders {
+  margin-top: 28px;
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 27px;
+}
+
+/* ---------- About ---------- */
+
+.about {
+  margin-top: 83px;
+  padding: 30px 72px 42px 71px;
+  background: var(--panel-grey);
+}
+
+.about .intro {
+  margin-top: 7px;
+  font-family: var(--oswald);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 25.2px;
+  color: var(--grey-text);
+}
+
+.about p:not(.intro) {
+  margin-top: 25px;
+  font-family: var(--almarai);
+  font-size: 18px;
+  line-height: 25.2px;
+  color: var(--navy);
+}
+
+/* ---------- Solutions ---------- */
+
+.solutions {
+  margin-top: 96px;
+  min-height: 615px;
+  padding: 66px 0 60px;
+  text-align: center;
+  background: var(--panel-lavender);
+}
+
+.solutions-lead {
+  max-width: 780px;
+  margin: 20px auto 0;
+  padding-inline: 16px;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 28.8px;
+}
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 38px;
+}
+
+.service-text,
+.read-more {
+  margin-inline: 20px;
+}
+
+/* On desktop the service names stay on one line, as on the original. */
+@media (min-width: 861px) {
+  .service h3,
+  .service-sub {
+    white-space: nowrap;
+  }
+}
+
+.service-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 67px;
+}
+
+.service h3 {
+  margin: 29px 0 0;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.service-sub {
+  margin-top: 6px;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--navy);
+}
+
+.service-text {
+  margin-top: 38px;
+  font-family: var(--madefor);
+  font-size: 15px;
+  line-height: 22.5px;
+  text-align: left;
+}
+
+.service-text p + p {
+  margin-top: 22.5px;
+}
+
+/* Clamp to two lines only when the script is running, so the full text
+   is always readable without JavaScript. */
+.js .service-text:not(.is-open) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.read-more {
+  display: none;
+  margin-top: 5px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--madefor);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 22.5px;
+  text-decoration: underline;
+  color: #000;
+  cursor: pointer;
+}
+
+.js .read-more {
+  display: block;
+}
+
+.js .read-more[hidden] {
+  display: none;
+}
+
+/* ---------- Mission + Values ---------- */
+
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 99px;
+}
+
+.mission,
+.values {
+  width: auto;
+  margin-inline: 0;
+  min-height: 603px;
+  padding: 36px 24px 36px 23px;
+  background: var(--panel-grey);
+}
+
+.mission h2,
+.values h2 {
+  text-align: center;
+  line-height: normal;
+}
+
+.mission p {
+  margin-top: 25px;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 25.2px;
+}
+
+.mission h2 + p {
+  margin-top: 39px;
+}
+
+.mission-close {
+  font-weight: 500 !important;
+  font-style: italic;
+}
+
+.values dl {
+  max-width: 267px;
+  margin: 26px auto 0;
+  text-align: center;
+}
+
+.values dt {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 25.2px;
+}
+
+.values dd {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 25.2px;
+}
+
+.value + .value::before {
+  content: "";
+  display: block;
+  width: 62px;
+  margin: 6px auto 18px;
+  border-top: 3px solid var(--divider);
+}
+
+/* ---------- Contact ---------- */
+
+.contact {
+  width: min(540px, calc(100% - 32px));
+  margin-top: 114px;
+  padding: 27px;
+  border-radius: 1px;
+  background: var(--panel-white);
+}
+
+.contact h2 {
+  font-family: var(--futura);
+  font-size: 30px;
+  line-height: 45px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.field {
+  margin-top: 24px;
+}
+
+.field label {
+  display: block;
+  font-family: var(--oswald);
+  font-weight: 200;
+  font-size: 19px;
+  line-height: 23px;
+  color: var(--navy);
+}
+
+.field input,
+.field textarea {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border: 0;
+  border-bottom: 2px solid #000;
+  border-radius: 1px;
+  background: #fff;
+  font-family: var(--helvetica);
+  font-size: 16px;
+  color: var(--navy);
+}
+
+.field input {
+  height: 38px;
+}
+
+.field textarea {
+  height: 92px;
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: 2px solid var(--navy);
+  outline-offset: 1px;
+}
+
+.field input[aria-invalid="true"] {
+  border-bottom-color: #c0262d;
+}
+
+.submit {
+  display: block;
+  width: 146px;
+  height: 41px;
+  margin-top: 24px;
+  border: 0;
+  border-radius: 100px;
+  background: var(--navy);
+  font-family: var(--helvetica);
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.submit:hover,
+.submit:focus-visible {
+  background: #45475e;
+}
+
+.form-status:not(:empty) {
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--navy);
+}
+
+.form-status.is-error {
+  color: #c0262d;
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  margin-top: 51px;
+  background: var(--footer-band);
+  color: #fff;
+}
+
+.footer-inner {
+  width: min(var(--column), calc(100% - 32px));
+  margin-inline: auto;
+  padding: 36px 18px 26px;
+}
+
+.footer-heading {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 25px;
+}
+
+.footer-contacts {
+  display: flex;
+  margin-top: 11px;
+}
+
+.footer-contacts > div {
+  width: 216px;
+}
+
+.footer-label {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.footer-contacts p:not(.footer-label),
+.copyright {
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 22.5px;
+}
+
+.footer-contacts a {
+  text-decoration: none;
+}
+
+.footer-contacts a:hover,
+.footer-contacts a:focus-visible {
+  text-decoration: underline;
+}
+
+.copyright {
+  margin-top: 10px;
+}
+
+/* ---------- Tablet and phone ---------- */
+
+@media (max-width: 860px) {
+  .services {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    max-width: 420px;
+    margin-inline: auto;
+  }
+
+  .solutions {
+    min-height: 0;
+  }
+
+  .pair {
+    grid-template-columns: 1fr;
+  }
+
+  .mission,
+  .values {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  body::before {
+    background-image: url("images/background-small.jpg");
+  }
+
+  .panel--header {
+    padding: 32px 16px 36px;
+  }
+
+  .logo {
+    width: min(300px, 85%);
+  }
+
+  .tagline {
+    font-size: 19px;
+    line-height: 28px;
+    letter-spacing: 1.5px;
+  }
+
+  .founders {
+    margin-top: 16px;
+    font-size: 18px;
+  }
+
+  .panel h2 {
+    font-size: 28px;
+    line-height: 40px;
+  }
+
+  .about {
+    margin-top: 40px;
+    padding: 28px 22px 32px;
+  }
+
+  .about p:not(.intro) {
+    margin-top: 18px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .solutions,
+  .pair,
+  .contact {
+    margin-top: 40px;
+  }
+
+  .solutions {
+    padding: 36px 0 40px;
+  }
+
+  .mission,
+  .values {
+    padding: 28px 22px 32px;
+  }
+
+  .mission p,
+  .values dt,
+  .values dd {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .mission p {
+    margin-top: 18px;
+  }
+
+  .mission h2 + p {
+    margin-top: 24px;
+  }
+
+  .contact {
+    padding: 27px 22px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .submit {
+    width: 100%;
+  }
+
+  .site-footer {
+    margin-top: 40px;
+  }
+
+  .footer-inner {
+    padding: 32px 6px 28px;
+  }
+
+  .footer-contacts {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
