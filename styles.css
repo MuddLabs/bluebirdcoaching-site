@@ -80,7 +80,7 @@
   --section-gap: clamp(var(--space-6), 6vw, var(--space-8));    /* 32 to 64: between panels */
   --gutter: clamp(var(--space-4), 3vw, var(--space-6));         /* 16 to 32: between columns */
   --stack-gap: clamp(var(--space-5), 3vw, var(--space-6));      /* 24 to 32: title block to content */
-  --card-pad: clamp(var(--space-4), 2.5vw, var(--space-5));     /* 16 to 24: inside service cards */
+  --card-pad: max(var(--space-4), var(--panel-pad) / 2);        /* 16 to 24: inside cards, half the panel padding */
 
   --topbar-height: 3.75rem;                                    /* 60: sticky bar */
 
@@ -307,6 +307,57 @@ a {
   margin-inline: auto;
 }
 
+/* ---------- Cards ---------- */
+
+/* A lighter surface inside a panel: the services, the About and Mission
+   text, and the values list. White lightens grey less than it lightens
+   lavender, so each panel sets its own amount, tuned so every card sits
+   about 5 points lighter than its panel on a 0 to 100 lightness scale. */
+.panel--grey { --card-bg: rgb(255 255 255 / 0.35); }
+.panel--lavender { --card-bg: rgb(255 255 255 / 0.26); }
+
+.card {
+  padding: var(--card-pad);
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+}
+
+/* In Mission and Values, the cards fill down to the same line. */
+.pair > .panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.pair > .panel > .card {
+  flex-grow: 1;
+}
+
+/* On wide screens, cards reach out into the panel's padding, so the text
+   inside keeps its place. Each card's edge sits halfway between the panel
+   edge and the text, so the space outside a card matches the padding
+   inside it: 24px for the full-width cards, more for About's narrower
+   centered text. */
+@media (min-width: 56.25rem) { /* 900px */
+  .services,
+  .pair > .panel > .card {
+    margin-inline: calc(-1 * var(--card-pad));
+  }
+
+  .services,
+  .panel > .card {
+    margin-bottom: calc(-1 * var(--card-pad));
+  }
+
+  /* Half the distance from the panel edge to the 48rem text column,
+     and never less than the usual card padding. */
+  .panel > .prose.card {
+    --inset: max(var(--card-pad), (100% + 2 * var(--panel-pad) - 48rem) / 4);
+    max-width: none;
+    margin-inline: calc(var(--inset) - var(--panel-pad));
+    padding-inline: var(--inset);
+  }
+}
+
 /* ---------- Button ---------- */
 
 .button {
@@ -466,25 +517,13 @@ a {
   column-gap: var(--gutter);
 }
 
-/* Each service sits on a lighter card of equal height. */
+/* Each service is a card (see Cards), and all three are the same height. */
 .service {
   display: grid;
   grid-row: span 4;
   grid-template-rows: subgrid;
   row-gap: 0;
-  padding: var(--card-pad);
-  border-radius: var(--radius-sm);
-  background: rgb(255 255 255 / 0.4);
   text-align: center; /* each service is centered in its column, text included */
-}
-
-/* Where the cards sit side by side, they reach out into the panel's padding,
-   so the text keeps its place and the cards stay clear of the panel edge. */
-@media (min-width: 56.25rem) { /* 900px */
-  .services {
-    margin-inline: calc(-1 * var(--card-pad));
-    margin-bottom: calc(-1 * var(--card-pad));
-  }
 }
 
 .service-icon {

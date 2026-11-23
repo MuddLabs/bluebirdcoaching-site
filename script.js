@@ -64,7 +64,7 @@
     event.preventDefault();
     var to = form.getAttribute("data-email");
     var company = field("company").value.trim();
-    var subject = "Website enquiry from " + name.value.trim() + (company ? " (" + company + ")" : "");
+    var subject = "Website inquiry from " + name.value.trim() + (company ? " (" + company + ")" : "");
     var body = [
       "Name: " + name.value.trim(),
       "Company: " + (company || "-"),
