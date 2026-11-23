@@ -16,140 +16,163 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Almarai:wght@400&family=Jost:wght@400&family=Oswald:wght@200;400&family=Wix+Madefor+Text:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..500;1,6..72,400&family=Oswald:wght@400&display=swap">
   <link rel="stylesheet" href="styles.css">
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
 
-  <header class="panel panel--header">
-    <img class="logo" src="images/logo.png" width="437" height="148" alt="bluebird coaching llc">
-    <p class="tagline">EXECUTIVE COACHING | HR | BRAND | TEAM BUILDING</p>
-    <p class="founders">Valerie Thomas</p>
-  </header>
-
-  <main id="main">
-    <section class="panel panel--grey about" aria-labelledby="about-heading">
-      <h2 id="about-heading">ABOUT US</h2>
-      <p class="intro">Bluebird Coaching accelerates high-performing organizations from the inside out.</p>
-      <p>We work with executive teams and leaders to strengthen the mindset, behaviors, and systems that shape how organizations operate every day.</p>
-      <p>Our work brings people, purpose, and strategy into alignment – so teams move with clarity, leaders lead with confidence, and businesses are built to scale.</p>
-      <p>We believe real performance starts on the inside – with how leaders lead, how teams collaborate, and how decisions get made.</p>
-      <p>Through immersive workshops, leadership coaching, and organizational design, we help companies build strong foundations for sustainable growth – and turn alignment into a competitive advantage.</p>
-    </section>
-
-    <section class="panel panel--lavender solutions" aria-labelledby="solutions-heading">
-      <h2 id="solutions-heading">OUR SOLUTIONS</h2>
-      <p class="solutions-lead">We don’t start from scratch. We calibrate what exists, activate what’s possible, and accelerate aligned performance.</p>
-
-      <div class="services">
-        <article class="service">
-          <div class="service-icon"><img src="images/icon-leadership-calibration.svg" width="56" height="56" alt=""></div>
-          <h3>LEADERSHIP CALIBRATION</h3>
-          <p class="service-sub">Executive + Leadership Coaching</p>
-          <div class="service-text" id="service-1">
-            <p>We work with executive teams and senior leaders to strengthen clarity, alignment, and decision flow. Using your existing research, engagement data, assessments, and strategy work, we recalibrate leadership mindset and behaviors to match the current moment of the business.</p>
-          </div>
-          <button class="read-more" type="button" aria-expanded="false" aria-controls="service-1">Read more</button>
-        </article>
-
-        <article class="service">
-          <div class="service-icon"><img src="images/icon-culture-people.svg" width="56" height="56" alt=""></div>
-          <h3>CULTURE + PEOPLE SYSTEMS</h3>
-          <p class="service-sub">HR Partnership + Organizational Effectiveness</p>
-          <div class="service-text" id="service-2">
-            <p>We help you translate insight into operating rhythm. From role clarity to feedback systems to leadership expectations, we align people practices with business priorities – building internal consistency across teams and locations.</p>
-          </div>
-          <button class="read-more" type="button" aria-expanded="false" aria-controls="service-2">Read more</button>
-        </article>
-
-        <article class="service">
-          <div class="service-icon"><img src="images/icon-operational-alignment.svg" width="56" height="56" alt=""></div>
-          <h3>OPERATIONAL ALIGNMENT</h3>
-          <p class="service-sub">Strategy &amp; Execution Design</p>
-          <div class="service-text" id="service-3">
-            <p>Strategy doesn’t fail because it’s wrong. It fails when it doesn’t move through the system.</p>
-            <p>We strengthen the connective tissue between leadership, operations, and execution – so priorities are clear, decisions move efficiently, and performance scales.</p>
-          </div>
-          <button class="read-more" type="button" aria-expanded="false" aria-controls="service-3">Read more</button>
-        </article>
-      </div>
-    </section>
-
-    <div class="pair">
-      <section class="panel panel--grey mission" aria-labelledby="mission-heading">
-        <h2 id="mission-heading">OUR MISSION</h2>
-        <p>A bluebird day means clear skies and the confidence to move.</p>
-        <p>That’s how we think about organizations.</p>
-        <p>Organizations don’t need more noise. They need clarity, alignment, and confidence in the path ahead.</p>
-        <p>Bluebird is also personal to us – a symbol of perspective, partnership, and shared journey. It represents what happens when the air clears, and teams can finally see where they’re going.</p>
-        <p>That’s the work we do.</p>
-        <p class="mission-close">We help organizations find their clear sky.</p>
-      </section>
-
-      <section class="panel panel--grey values" aria-labelledby="values-heading">
-        <h2 id="values-heading">OUR VALUES</h2>
-        <dl>
-          <div class="value"><dt>CLARITY</dt><dd>We simplify complexity so leaders can move decisively.</dd></div>
-          <div class="value"><dt>RESPECT</dt><dd>We strengthen what exists before introducing what’s new.</dd></div>
-          <div class="value"><dt>ACCOUNTABILITY</dt><dd>We design for measurable, lasting impact.</dd></div>
-          <div class="value"><dt>PARTNERSHIP</dt><dd>We build with you, not for you.</dd></div>
-          <div class="value"><dt>INTEGRITY</dt><dd>We operate with honesty, discretion, and follow-through.</dd></div>
-        </dl>
-      </section>
+  <!-- Slim bar that slides in once the header has scrolled away (see script.js). -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="topbar-logo" href="#top"><img src="images/logo.png" width="437" height="148" alt="Bluebird Coaching, back to top"></a>
+      <a class="button button--small" href="#contact">Get in touch</a>
     </div>
+  </div>
 
-    <section class="panel contact" aria-labelledby="contact-heading">
-      <h2 id="contact-heading">CONTACT US</h2>
-      <!--
-        This form opens the visitor's email app with the message filled in,
-        addressed to the email below, so it works on any host with no extra service.
-        To send submissions through a form service instead (Formspree, Basin,
-        Netlify Forms, etc.), set action="..." to the service's URL; the page
-        will then submit to it normally.
-      -->
-      <form id="contact-form" action="" method="post" data-email="hello@bluebirdcoaching.org" novalidate>
-        <div class="field-row">
-          <div class="field">
-            <label for="name">Name *</label>
-            <input id="name" name="name" type="text" autocomplete="name" required>
-          </div>
-          <div class="field">
-            <label for="company">Company</label>
-            <input id="company" name="company" type="text" autocomplete="organization">
-          </div>
-        </div>
-        <div class="field">
-          <label for="email">Email *</label>
-          <input id="email" name="email" type="email" autocomplete="email" required>
-        </div>
-        <div class="field">
-          <label for="message">Write a message</label>
-          <textarea id="message" name="message" rows="3"></textarea>
-        </div>
-        <button class="submit" type="submit">SUBMIT</button>
-        <p class="form-status" role="status" aria-live="polite"></p>
-      </form>
-    </section>
-  </main>
+  <div class="page">
+    <header class="panel panel--blue masthead">
+      <img class="logo" src="images/logo.png" width="437" height="148" alt="bluebird coaching llc">
+      <ul class="tagline">
+        <li>Executive Coaching</li>
+        <li>HR</li>
+        <li>Brand</li>
+        <li>Team Building</li>
+      </ul>
+      <p class="byline">Valerie Thomas</p>
+      <a class="button" href="#contact">Get in touch</a>
+    </header>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <p class="footer-heading">CONNECT WITH US</p>
-      <div class="footer-contacts">
-        <div>
-          <p class="footer-label">EMAIL</p>
+    <main id="main" class="sections">
+      <section class="panel panel--grey" aria-labelledby="about-heading">
+        <div class="section-head">
+          <h2 class="section-title" id="about-heading">About us</h2>
+          <p class="lead">Bluebird Coaching accelerates high&#8209;performing organizations from the inside out.</p>
+        </div>
+        <div class="prose">
+          <p>We work with executive teams and leaders to strengthen the mindset, behaviors, and systems that shape how organizations operate every day.</p>
+          <p>Our work brings people, purpose, and strategy into alignment, so teams move with clarity, leaders lead with confidence, and businesses are built to scale.</p>
+          <p>We believe real performance starts on the inside: with how leaders lead, how teams collaborate, and how decisions get made.</p>
+          <p>Through immersive workshops, leadership coaching, and organizational design, we help companies build strong foundations for sustainable growth and turn alignment into a competitive advantage.</p>
+        </div>
+      </section>
+
+      <section class="panel panel--lavender" aria-labelledby="solutions-heading">
+        <div class="section-head">
+          <h2 class="section-title" id="solutions-heading">Our solutions</h2>
+          <p class="lead">We don’t start from scratch. We calibrate what exists, activate what’s possible, and accelerate aligned performance.</p>
+        </div>
+        <div class="services">
+          <article class="service">
+            <img class="service-icon" src="images/icon-leadership-calibration.svg" width="48" height="48" alt="">
+            <h3 class="item-title">Leadership Calibration</h3>
+            <p class="label">Executive + Leadership Coaching</p>
+            <div class="prose">
+              <p>We work with executive teams and senior leaders to strengthen clarity, alignment, and decision flow. Using your existing research, engagement data, assessments, and strategy work, we recalibrate leadership mindset and behaviors to match the current moment of the business.</p>
+            </div>
+          </article>
+
+          <article class="service">
+            <img class="service-icon" src="images/icon-culture-people.svg" width="48" height="48" alt="">
+            <h3 class="item-title">Culture + People Systems</h3>
+            <p class="label">HR Partnership + Organizational Effectiveness</p>
+            <div class="prose">
+              <p>We help you translate insight into operating rhythm. From role clarity to feedback systems to leadership expectations, we align people practices with business priorities, building internal consistency across teams and locations.</p>
+            </div>
+          </article>
+
+          <article class="service">
+            <img class="service-icon" src="images/icon-operational-alignment.svg" width="48" height="48" alt="">
+            <h3 class="item-title">Operational Alignment</h3>
+            <p class="label">Strategy &amp; Execution Design</p>
+            <div class="prose">
+              <p>Strategy doesn’t fail because it’s wrong. It fails when it doesn’t move through the system.</p>
+              <p>We strengthen the connective tissue between leadership, operations, and execution, so priorities are clear, decisions move efficiently, and performance scales.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <div class="grid pair">
+        <section class="panel panel--grey span-6" aria-labelledby="mission-heading">
+          <div class="section-head">
+            <h2 class="section-title" id="mission-heading">Our mission</h2>
+            <p class="lead">A bluebird day means clear skies and the confidence to move.</p>
+          </div>
+          <div class="prose">
+            <p>That’s how we think about organizations.</p>
+            <p>Organizations don’t need more noise. They need clarity, alignment, and confidence in the path ahead.</p>
+            <p>Bluebird is also personal to us: a symbol of perspective, partnership, and shared journey. It represents what happens when the air clears, and teams can finally see where they’re going.</p>
+            <p>That’s the work we do.</p>
+            <p class="closing">We help organizations find their clear sky.</p>
+          </div>
+        </section>
+
+        <section class="panel panel--grey span-6" aria-labelledby="values-heading">
+          <div class="section-head">
+            <h2 class="section-title" id="values-heading">Our values</h2>
+          </div>
+          <dl class="value-list">
+            <div class="value"><dt class="item-title">Clarity</dt><dd>We simplify complexity so leaders can move decisively.</dd></div>
+            <div class="value"><dt class="item-title">Respect</dt><dd>We strengthen what exists before introducing what’s new.</dd></div>
+            <div class="value"><dt class="item-title">Accountability</dt><dd>We design for measurable, lasting impact.</dd></div>
+            <div class="value"><dt class="item-title">Partnership</dt><dd>We build with you, not for you.</dd></div>
+            <div class="value"><dt class="item-title">Integrity</dt><dd>We operate with honesty, discretion, and follow&#8209;through.</dd></div>
+          </dl>
+        </section>
+      </div>
+
+      <section class="panel panel--white contact" id="contact" aria-labelledby="contact-heading">
+        <div class="section-head">
+          <h2 class="section-title" id="contact-heading">Contact us</h2>
+        </div>
+        <!--
+          This form opens the visitor's email app with the message filled in,
+          addressed to the email below, so it works on any host with no extra service.
+          To send submissions through a form service instead (Formspree, Basin,
+          Netlify Forms, etc.), set action="..." to the service's URL; the page
+          will then submit to it normally.
+        -->
+        <form class="form" id="contact-form" action="" method="post" data-email="hello@bluebirdcoaching.org" novalidate>
+          <div class="grid form-fields">
+            <div class="field span-4">
+              <label for="name">Name <span class="required" aria-hidden="true">*</span></label>
+              <input id="name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field span-4">
+              <label for="email">Email <span class="required" aria-hidden="true">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field span-4">
+              <label for="company">Company</label>
+              <input id="company" name="company" type="text" autocomplete="organization">
+            </div>
+            <div class="field span-12">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="5"></textarea>
+            </div>
+          </div>
+          <button class="button" type="submit">Send message</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="panel panel--blue site-footer">
+      <div class="grid footer-grid">
+        <h2 class="section-title footer-title">Reach out directly</h2>
+        <div class="footer-item">
+          <p class="label">Email</p>
           <p><a href="mailto:hello@bluebirdcoaching.org">hello@bluebirdcoaching.org</a></p>
         </div>
-        <div>
-          <p class="footer-label">PHONE</p>
+        <div class="footer-item">
+          <p class="label">Phone</p>
           <p><a href="tel:+13145850680">314.585.0680</a></p>
         </div>
+        <p class="copyright">© <span id="year">2026</span> Bluebird Coaching LLC</p>
       </div>
-      <p class="copyright">© <span id="year">2026</span> Bluebird Coaching LLC</p>
-    </div>
-  </footer>
-
+    </footer>
+  </div>
 </body>
 </html>

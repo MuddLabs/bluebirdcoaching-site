@@ -1,27 +1,94 @@
-/* Bluebird Coaching: static rebuild of the original Wix homepage.
-   Measurements follow the live Wix page (980 px content column). */
+/* Bluebird Coaching
+
+   Every color, size and gap on the page comes from the tokens below, so the
+   sections share one rhythm. Change a token and the whole page follows.
+
+   Type roles
+     Oswald      section titles, tagline and small labels (always capitals)
+     Newsreader  lead lines, item titles and the founder's name
+     Figtree     reading text, the form and buttons
+
+   Layout
+     Everything sits in one 1040px column. Panels share padding, corners and
+     opacity; only their tint changes. Each section is its
+     title block, then its content. Title blocks are centered, like the
+     masthead. Lead lines and body text share one width, 48rem, and body
+     text sits in a centered column but stays left-aligned, which is easier
+     to read. Things that sit side by side (the services, the form fields,
+     mission and values, the footer) split a 12-column grid into thirds or
+     halves (.grid with .span-N children) and stack below 900px.
+
+   Vertical rhythm
+     16px inside a title block, 32px from a title block to its content and
+     64px between panels. All three get smaller on phones.
+
+   Effects
+     Kept light on purpose, because many visitors use older Windows PCs.
+     There's no blur. The only motion is the background photo's slow drift
+     and the sticky bar's short slide, which the graphics card handles on its
+     own. Browsers that lack a
+     newer feature (the drift, the subgrid that lines up the services,
+     balanced line breaks) skip it and show a plain version instead. */
 
 :root {
-  --navy: #2e2f3f;
-  --grey-text: #767674;
-  --divider: #282626;
+  /* Color */
+  --ink: #2e2f3f;
+  --ink-soft: #4d4f61;
+  --ink-hover: #45475e;
+  --line: rgb(46 47 63 / 0.16);
+  --line-strong: rgb(46 47 63 / 0.3);
+  --error: #b3261e;
 
-  --panel-header: rgba(182, 195, 212, 0.59);
-  --panel-header-border: rgba(196, 205, 232, 0.46);
-  --panel-grey: rgba(218, 216, 216, 0.75);
-  --panel-lavender: rgba(196, 205, 232, 0.6);
-  --panel-white: rgba(255, 255, 255, 0.75);
-  --footer-band: rgba(202, 213, 229, 0.7);
+  /* Panel tints, all at one opacity. They're solid enough to keep text
+     clear over the photo without a blur, which is costly to draw on
+     older computers. */
+  --panel-alpha: 0.85;
+  --panel-blue: rgb(182 195 212 / var(--panel-alpha));
+  --panel-grey: rgb(218 216 216 / var(--panel-alpha));
+  --panel-lavender: rgb(196 205 232 / var(--panel-alpha));
+  --panel-white: rgb(255 255 255 / var(--panel-alpha));
 
-  /* Helvetica was a Wix-licensed web font; these system fonts match it closely. */
-  --helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --oswald: "Oswald", "Arial Narrow", sans-serif;
-  --almarai: "Almarai", var(--helvetica);
-  --futura: "Jost", Futura, "Century Gothic", sans-serif;
-  --madefor: "Wix Madefor Text", var(--helvetica);
+  /* Typefaces */
+  --font-display: "Oswald", "Arial Narrow", sans-serif;
+  --font-serif: "Newsreader", Georgia, serif;
+  --font-sans: "Figtree", "Helvetica Neue", Arial, sans-serif;
 
-  --column: 980px;
+  /* Type scale: 17px body text, each step about 1.25 times the last.
+     The top step shrinks on small screens. Lead lines share it with the
+     section titles, and the titles still read first because they're capitals. */
+  --step--1: 0.875rem;                                    /* 14: labels, small print */
+  --step-0: 1.0625rem;                                    /* 17: body text */
+  --step-1: 1.3125rem;                                    /* 21: item titles, name, closing line */
+  --step-2: clamp(1.375rem, 1.1rem + 0.9vw, 1.625rem);    /* 22 to 26: section titles, lead lines */
+  --size-tagline: clamp(0.9375rem, 0.8rem + 0.6vw, 1.1875rem); /* 15 to 19 */
+
+  /* Spacing scale (4px base) */
+  --space-1: 0.25rem;  /* 4 */
+  --space-2: 0.5rem;   /* 8 */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.5rem;   /* 24 */
+  --space-6: 2rem;     /* 32 */
+  --space-7: 3rem;     /* 48 */
+  --space-8: 4rem;     /* 64 */
+
+  /* Layout. Each value grows from its phone size to its desktop size,
+     and both ends are steps on the spacing scale. */
+  --container: 65rem;                                          /* 1040 */
+  --page-gutter: clamp(var(--space-4), 4vw, var(--space-6));    /* 16 to 32: page edge */
+  --panel-pad: clamp(var(--space-4), 4.5vw, var(--space-7));    /* 16 to 48: inside panels */
+  --section-gap: clamp(var(--space-6), 6vw, var(--space-8));    /* 32 to 64: between panels */
+  --gutter: clamp(var(--space-4), 3vw, var(--space-6));         /* 16 to 32: between columns */
+  --stack-gap: clamp(var(--space-5), 3vw, var(--space-6));      /* 24 to 32: title block to content */
+  --card-pad: clamp(var(--space-4), 2.5vw, var(--space-5));     /* 16 to 24: inside service cards */
+
+  --topbar-height: 3.75rem;                                    /* 60: sticky bar */
+
+  --radius: 8px;
+  --radius-sm: 6px;
 }
+
+/* ---------- Base ---------- */
 
 *,
 *::before,
@@ -34,570 +101,619 @@ html {
   text-size-adjust: 100%;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   margin: 0;
-  font-family: var(--helvetica);
-  color: #000;
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  color: var(--ink);
   background: #c3cddc; /* shown while the photo loads */
 }
 
-/* Feather photo fixed behind the whole page (works on phones too). */
+/* Feather photo behind the whole page. It's drawn a little taller than the
+   screen and drifts from its top edge to its bottom edge as the page
+   scrolls, for a slow parallax. Where the browser can't link animation to
+   scrolling, or the visitor has reduced motion turned on, it stays put. */
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
   z-index: -1;
+  width: 100%;
+  /* At least 15% taller than the screen, and tall enough for the 3:2
+     photo to cover the full width. */
+  height: max(115vh, 100vw / 1.5);
+  height: max(115lvh, 100vw / 1.5);
   background: url("images/background.jpg") center / cover no-repeat;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    body::before {
+      animation: background-drift linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+
+/* Ends with the photo's bottom edge at the bottom of the screen. */
+@keyframes background-drift {
+  to {
+    transform: translateY(calc(100vh - 100%));
+  }
 }
 
 h2,
 h3,
 p,
+ul,
 dl,
 dd {
   margin: 0;
 }
 
-a {
-  color: inherit;
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+p,
+dd {
+  text-wrap: pretty; /* avoids a single word alone on the last line */
 }
 
 img {
+  display: block;
   max-width: 100%;
   height: auto;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
 }
 
 .skip-link {
   position: absolute;
   left: 50%;
-  top: 8px;
-  transform: translate(-50%, -200%);
-  padding: 8px 14px;
+  top: var(--space-2);
+  z-index: 30;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
   background: #fff;
-  color: #116dff;
-  font-size: 14px;
-  z-index: 10;
+  font-size: var(--step--1);
+  font-weight: 600;
+  transform: translate(-50%, -200%);
 }
 
 .skip-link:focus {
   transform: translate(-50%, 0);
 }
 
-/* ---------- Panels ---------- */
+/* ---------- Page and panels ---------- */
 
-.panel,
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+  width: min(var(--container), 100% - 2 * var(--page-gutter));
+  margin-inline: auto;
+  padding-block: var(--page-gutter);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+}
+
+.panel {
+  padding: var(--panel-pad);
+  border: 1px solid rgb(255 255 255 / 0.45);
+  border-radius: var(--radius);
+  background: var(--panel-bg);
+}
+
+.panel--blue { --panel-bg: var(--panel-blue); }
+.panel--grey { --panel-bg: var(--panel-grey); }
+.panel--lavender { --panel-bg: var(--panel-lavender); }
+.panel--white { --panel-bg: var(--panel-white); }
+
+/* ---------- Grid ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--stack-gap) var(--gutter);
+}
+
+.span-4 { grid-column: span 4; }   /* a third */
+.span-6 { grid-column: span 6; }   /* a half */
+.span-12 { grid-column: 1 / -1; }  /* full width */
+
+/* Side-by-side panels keep the section gap when they stack. */
 .pair {
-  width: min(var(--column), calc(100% - 32px));
+  row-gap: var(--section-gap);
+}
+
+/* ---------- Type roles ---------- */
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--step-2);
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.section-head {
+  text-align: center;
+}
+
+.lead {
+  max-width: 48rem;
+  margin: var(--space-4) auto 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--step-2);
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.item-title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--step-1);
+  line-height: 1.3;
+}
+
+.label {
+  font-family: var(--font-display);
+  font-size: var(--step--1);
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.prose {
+  max-width: 48rem; /* the same width as lead lines */
+}
+
+.prose > * + * {
+  margin-top: 1em;
+}
+
+/* Title block to content. */
+.panel > .section-head + * {
+  margin-top: var(--stack-gap);
+}
+
+/* A panel's body text sits in a centered column. */
+.panel > .prose {
   margin-inline: auto;
 }
 
-.panel h2 {
-  font-family: var(--helvetica);
-  font-weight: 400;
-  font-size: 35px;
-  line-height: 49px;
+/* ---------- Button ---------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0 var(--space-6);
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
 }
 
-/* ---------- Header ---------- */
+.button:hover {
+  background: var(--ink-hover);
+}
 
-.panel--header {
-  padding: 51px 20px 60px;
+.button--small {
+  min-height: 2.5rem;
+  padding: 0 var(--space-5);
+  font-size: 0.9375rem;
+}
+
+/* ---------- Masthead ---------- */
+
+.masthead {
   text-align: center;
-  background: var(--panel-header);
-  border: 1px solid var(--panel-header-border);
 }
 
 .logo {
-  display: block;
-  width: 437px;
-  margin: 0 auto;
+  width: min(25rem, 100%);
+  margin-inline: auto;
 }
 
 .tagline {
-  margin-top: 17px;
-  font-family: var(--oswald);
-  font-weight: 400;
-  font-size: 25px;
-  line-height: 37px;
-  letter-spacing: 2.5px;
-  color: var(--navy);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-5);
+  padding-left: 0.14em; /* balances the letter spacing after the last letter */
+  font-family: var(--font-display);
+  font-size: var(--size-tagline);
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.founders {
-  margin-top: 28px;
-  font-weight: 300;
-  font-size: 22px;
-  line-height: 27px;
+.tagline li {
+  display: flex;
+  align-items: center;
 }
 
-/* ---------- About ---------- */
-
-.about {
-  margin-top: 83px;
-  padding: 30px 72px 42px 71px;
-  background: var(--panel-grey);
+/* A small dot between services, drawn rather than typed so screen
+   readers don't announce it. */
+.tagline li + li::before {
+  content: "";
+  width: 0.25em;
+  height: 0.25em;
+  margin: 0 0.75em 0 calc(0.75em - 0.14em);
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
 }
 
-.about .intro {
-  margin-top: 7px;
-  font-family: var(--oswald);
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 25.2px;
-  color: var(--grey-text);
+.byline {
+  margin-top: var(--space-3);
+  font-family: var(--font-serif);
+  font-size: var(--step-1);
+  line-height: 1.3;
 }
 
-.about p:not(.intro) {
-  margin-top: 25px;
-  font-family: var(--almarai);
-  font-size: 18px;
-  line-height: 25.2px;
-  color: var(--navy);
+.masthead .button {
+  margin-top: var(--space-6);
+}
+
+/* ---------- Sticky bar ---------- */
+
+/* Slides in once the header has scrolled away (script.js adds .is-visible).
+   The bar runs the full width of the screen; its contents sit in the same
+   column as the panels, so the logo lines up with their content. It's
+   solid navy, the text color, because the white logo washes out on light
+   blue at this small size, and because text scrolling underneath
+   shouldn't show through. */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: var(--topbar-height);
+  background: var(--ink);
+  box-shadow: 0 4px 16px rgb(46 47 63 / 0.25);
+  transform: translateY(calc(-100% - var(--space-6)));
+  visibility: hidden;
+  transition: transform 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: min(var(--container), 100% - 2 * var(--page-gutter));
+  height: 100%;
+  margin-inline: auto;
+  padding-inline: var(--panel-pad);
+}
+
+.topbar.is-visible {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.25s ease;
+}
+
+.topbar-logo img {
+  width: auto;
+  height: 2.25rem;
+}
+
+/* White button and white focus ring on the navy bar. */
+.topbar .button {
+  background: #fff;
+  color: var(--ink);
+}
+
+.topbar .button:hover {
+  background: #e6e8ef;
+}
+
+.topbar :focus-visible {
+  outline-color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar,
+  .topbar.is-visible {
+    transition: none;
+  }
 }
 
 /* ---------- Solutions ---------- */
 
-.solutions {
-  margin-top: 96px;
-  min-height: 615px;
-  padding: 66px 0 60px;
-  text-align: center;
-  background: var(--panel-lavender);
-}
-
-.solutions-lead {
-  max-width: 780px;
-  margin: 20px auto 0;
-  padding-inline: 16px;
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 28.8px;
-}
-
+/* The three services share four rows (icon, title, subtitle, text), so each
+   row lines up across the columns even when one subtitle wraps. */
 .services {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 38px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--gutter);
 }
 
-.service-text,
-.read-more {
-  margin-inline: 20px;
+/* Each service sits on a lighter card of equal height. */
+.service {
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  padding: var(--card-pad);
+  border-radius: var(--radius-sm);
+  background: rgb(255 255 255 / 0.4);
+  text-align: center; /* each service is centered in its column, text included */
 }
 
-/* On desktop the service names stay on one line, as on the original. */
-@media (min-width: 861px) {
-  .service h3,
-  .service-sub {
-    white-space: nowrap;
+/* Where the cards sit side by side, they reach out into the panel's padding,
+   so the text keeps its place and the cards stay clear of the panel edge. */
+@media (min-width: 56.25rem) { /* 900px */
+  .services {
+    margin-inline: calc(-1 * var(--card-pad));
+    margin-bottom: calc(-1 * var(--card-pad));
   }
 }
 
 .service-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 67px;
+  width: 3rem;
+  height: 3rem;
+  margin-inline: auto;
 }
 
-.service h3 {
-  margin: 29px 0 0;
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 28px;
+.service .item-title {
+  margin-top: var(--space-5);
 }
 
-.service-sub {
-  margin-top: 6px;
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--navy);
+.service .label {
+  margin-top: var(--space-2);
 }
 
-.service-text {
-  margin-top: 38px;
-  font-family: var(--madefor);
-  font-size: 15px;
-  line-height: 22.5px;
-  text-align: left;
+.service .prose {
+  margin-top: var(--space-4);
 }
 
-.service-text p + p {
-  margin-top: 22.5px;
-}
+/* ---------- Mission and values ---------- */
 
-/* Clamp to two lines only when the script is running, so the full text
-   is always readable without JavaScript. */
-.js .service-text:not(.is-open) {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
-}
-
-.read-more {
-  display: none;
-  margin-top: 5px;
-  padding: 0;
-  border: 0;
-  background: none;
-  font-family: var(--madefor);
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 22.5px;
-  text-decoration: underline;
-  color: #000;
-  cursor: pointer;
-}
-
-.js .read-more {
-  display: block;
-}
-
-.js .read-more[hidden] {
-  display: none;
-}
-
-/* ---------- Mission + Values ---------- */
-
-.pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-top: 99px;
-}
-
-.mission,
-.values {
-  width: auto;
-  margin-inline: 0;
-  min-height: 603px;
-  padding: 36px 24px 36px 23px;
-  background: var(--panel-grey);
-}
-
-.mission h2,
-.values h2 {
-  text-align: center;
-  line-height: normal;
-}
-
-.mission p {
-  margin-top: 25px;
-  font-weight: 300;
-  font-size: 18px;
-  line-height: 25.2px;
-}
-
-.mission h2 + p {
-  margin-top: 39px;
-}
-
-.mission-close {
-  font-weight: 500 !important;
+.closing {
+  font-family: var(--font-serif);
   font-style: italic;
+  font-size: var(--step-1);
+  line-height: 1.35;
 }
 
-.values dl {
-  max-width: 267px;
-  margin: 26px auto 0;
+.value-list {
   text-align: center;
 }
 
-.values dt {
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 25.2px;
+.value {
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--line);
 }
 
-.values dd {
-  font-weight: 300;
-  font-size: 18px;
-  line-height: 25.2px;
+.value:first-child {
+  padding-top: 0;
+  border-top: 0;
 }
 
-.value + .value::before {
-  content: "";
-  display: block;
-  width: 62px;
-  margin: 6px auto 18px;
-  border-top: 3px solid var(--divider);
+.value:last-child {
+  padding-bottom: 0;
 }
 
-/* ---------- Contact ---------- */
+.value dd {
+  margin-top: var(--space-1);
+}
+
+/* ---------- Contact form ---------- */
 
 .contact {
-  width: min(540px, calc(100% - 32px));
-  margin-top: 114px;
-  padding: 27px;
-  border-radius: 1px;
-  background: var(--panel-white);
+  scroll-margin-top: calc(var(--topbar-height) + 2 * var(--space-3)); /* clears the sticky bar */
 }
 
-.contact h2 {
-  font-family: var(--futura);
-  font-size: 30px;
-  line-height: 45px;
-}
-
-.field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-.field {
-  margin-top: 24px;
+.form-fields {
+  row-gap: var(--space-5);
 }
 
 .field label {
   display: block;
-  font-family: var(--oswald);
-  font-weight: 200;
-  font-size: 19px;
-  line-height: 23px;
-  color: var(--navy);
+  margin-bottom: var(--space-2);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.required {
+  color: var(--ink-soft);
 }
 
 .field input,
 .field textarea {
   display: block;
   width: 100%;
-  margin-top: 8px;
-  padding: 6px 10px;
-  border: 0;
-  border-bottom: 2px solid #000;
-  border-radius: 1px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
   background: #fff;
-  font-family: var(--helvetica);
-  font-size: 16px;
-  color: var(--navy);
+  font-family: var(--font-sans);
+  font-size: 1rem; /* 16px or more stops phones zooming in */
+  line-height: 1.5;
+  color: var(--ink);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .field input {
-  height: 38px;
+  height: 3rem;
 }
 
 .field textarea {
-  height: 92px;
+  min-height: 9rem;
   resize: vertical;
+}
+
+.field input:hover,
+.field textarea:hover {
+  border-color: rgb(46 47 63 / 0.5);
 }
 
 .field input:focus,
 .field textarea:focus {
-  outline: 2px solid var(--navy);
-  outline-offset: 1px;
+  outline: 2px solid transparent; /* still shows in Windows high-contrast mode */
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgb(46 47 63 / 0.15);
 }
 
-.field input[aria-invalid="true"] {
-  border-bottom-color: #c0262d;
+.field [aria-invalid="true"] {
+  border-color: var(--error);
 }
 
-.submit {
-  display: block;
-  width: 146px;
-  height: 41px;
-  margin-top: 24px;
-  border: 0;
-  border-radius: 100px;
-  background: var(--navy);
-  font-family: var(--helvetica);
-  font-size: 16px;
-  color: #fff;
-  cursor: pointer;
-}
-
-.submit:hover,
-.submit:focus-visible {
-  background: #45475e;
+.form .button {
+  margin-top: var(--space-6);
 }
 
 .form-status:not(:empty) {
-  margin-top: 16px;
-  font-size: 15px;
+  margin-top: var(--space-4);
+  font-size: 0.9375rem;
   line-height: 1.5;
-  color: var(--navy);
 }
 
 .form-status.is-error {
-  color: #c0262d;
+  color: var(--error);
 }
 
 /* ---------- Footer ---------- */
 
+/* Two short lines in thirds, on the same column lines as the services and
+   the form fields:
+     REACH OUT DIRECTLY      EMAIL                        PHONE
+     © 2026 Bluebird ...     hello@bluebirdcoaching.org   314.585.0680
+   Email and phone each span both lines on a subgrid, so their labels line up
+   with the heading and their values with the copyright. On phones it stacks
+   in page order: heading, email, phone, copyright. */
 .site-footer {
-  margin-top: 51px;
-  background: var(--footer-band);
-  color: #fff;
+  padding-block: var(--space-5);
+  font-size: var(--step--1);
 }
 
-.footer-inner {
-  width: min(var(--column), calc(100% - 32px));
-  margin-inline: auto;
-  padding: 36px 18px 26px;
+.footer-grid {
+  row-gap: var(--space-1);
+  align-items: last baseline;
 }
 
-.footer-heading {
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 25px;
+.footer-title {
+  grid-column: 1 / span 4;
+  grid-row: 1;
+  font-size: var(--step-0);
 }
 
-.footer-contacts {
-  display: flex;
-  margin-top: 11px;
+.footer-item {
+  display: grid;
+  grid-column: span 4;
+  grid-row: 1 / span 2;
+  grid-template-rows: subgrid;
+  align-items: last baseline;
 }
 
-.footer-contacts > div {
-  width: 216px;
-}
-
-.footer-label {
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 19px;
-}
-
-.footer-contacts p:not(.footer-label),
-.copyright {
-  font-weight: 300;
-  font-size: 15px;
-  line-height: 22.5px;
-}
-
-.footer-contacts a {
+.site-footer a {
   text-decoration: none;
 }
 
-.footer-contacts a:hover,
-.footer-contacts a:focus-visible {
+.site-footer a:hover,
+.site-footer a:focus-visible {
   text-decoration: underline;
 }
 
 .copyright {
-  margin-top: 10px;
+  grid-column: 1 / span 4;
+  grid-row: 2;
+  color: var(--ink-soft);
 }
 
 /* ---------- Tablet and phone ---------- */
 
-@media (max-width: 860px) {
+@media (max-width: 56.1875rem) { /* 899px */
+  .grid > * {
+    grid-column: 1 / -1;
+  }
+
   .services {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    max-width: 420px;
-    margin-inline: auto;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--stack-gap);
   }
 
-  .solutions {
-    min-height: 0;
+  .service {
+    display: block;
   }
 
-  .pair {
-    grid-template-columns: 1fr;
+  .footer-grid {
+    row-gap: var(--space-4);
   }
 
-  .mission,
-  .values {
-    min-height: 0;
+  .footer-title,
+  .footer-item,
+  .copyright {
+    grid-row: auto;
+  }
+
+  .footer-item {
+    grid-template-rows: none;
+    row-gap: var(--space-1);
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 40rem) { /* 640px */
   body::before {
     background-image: url("images/background-small.jpg");
   }
 
-  .panel--header {
-    padding: 32px 16px 36px;
+  /* Tagline on two even lines: "Executive Coaching · HR" over
+     "Brand · Team Building", so no line starts or ends with a dot. */
+  .tagline::after {
+    content: "";
+    flex-basis: 100%;
+    order: 1;
   }
 
-  .logo {
-    width: min(300px, 85%);
+  .tagline li:nth-child(n + 3) {
+    order: 2;
   }
 
-  .tagline {
-    font-size: 19px;
-    line-height: 28px;
-    letter-spacing: 1.5px;
+  .tagline li:nth-child(3)::before {
+    display: none;
   }
 
-  .founders {
-    margin-top: 16px;
-    font-size: 18px;
-  }
-
-  .panel h2 {
-    font-size: 28px;
-    line-height: 40px;
-  }
-
-  .about {
-    margin-top: 40px;
-    padding: 28px 22px 32px;
-  }
-
-  .about p:not(.intro) {
-    margin-top: 18px;
-    font-size: 16px;
-    line-height: 24px;
-  }
-
-  .solutions,
-  .pair,
-  .contact {
-    margin-top: 40px;
-  }
-
-  .solutions {
-    padding: 36px 0 40px;
-  }
-
-  .mission,
-  .values {
-    padding: 28px 22px 32px;
-  }
-
-  .mission p,
-  .values dt,
-  .values dd {
-    font-size: 16px;
-    line-height: 24px;
-  }
-
-  .mission p {
-    margin-top: 18px;
-  }
-
-  .mission h2 + p {
-    margin-top: 24px;
-  }
-
-  .contact {
-    padding: 27px 22px;
-  }
-
-  .field-row {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .submit {
+  .form .button {
     width: 100%;
-  }
-
-  .site-footer {
-    margin-top: 40px;
-  }
-
-  .footer-inner {
-    padding: 32px 6px 28px;
-  }
-
-  .footer-contacts {
-    flex-direction: column;
-    gap: 12px;
   }
 }

@@ -1,40 +1,26 @@
-/* Loaded in <head>. Marks straight away that JavaScript is running (so the
-   "Read more" text is shortened before the page first appears), then sets
-   up the page once it has loaded. */
-document.documentElement.classList.add("js");
-
-document.addEventListener("DOMContentLoaded", function () {
+/* Loaded with defer, so the page has been read before this runs.
+   Sets the copyright year, shows the sticky bar and handles the contact form. */
+(function () {
   "use strict";
-
-  /* ---------- "Read more" on the three services ---------- */
-
-  document.querySelectorAll(".read-more").forEach(function (button) {
-    var text = document.getElementById(button.getAttribute("aria-controls"));
-    if (!text) return;
-
-    function updateVisibility() {
-      var open = text.classList.contains("is-open");
-      // Only show the button when the text is actually cut short.
-      button.hidden = !open && text.scrollHeight <= text.clientHeight + 1;
-    }
-
-    button.addEventListener("click", function () {
-      var open = text.classList.toggle("is-open");
-      button.setAttribute("aria-expanded", String(open));
-      button.textContent = open ? "Read less" : "Read more";
-    });
-
-    updateVisibility();
-    window.addEventListener("resize", updateVisibility);
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(updateVisibility);
-    }
-  });
 
   /* ---------- Copyright year ---------- */
 
   var year = document.getElementById("year");
   if (year) year.textContent = String(new Date().getFullYear());
+
+  /* ---------- Sticky bar ---------- */
+
+  // Shows the slim bar while the header is off screen. The browser reports
+  // when that changes, so nothing runs during scrolling. Browsers too old to
+  // report it never show the bar, and the page works the same without it.
+  var masthead = document.querySelector(".masthead");
+  var topbar = document.querySelector(".topbar");
+
+  if (masthead && topbar && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      topbar.classList.toggle("is-visible", !entries[0].isIntersecting);
+    }).observe(masthead);
+  }
 
   /* ---------- Contact form ---------- */
 
@@ -96,4 +82,4 @@ document.addEventListener("DOMContentLoaded", function () {
       "Your email app should now open with your message ready to send. " +
       "If it doesn’t, please email us at " + to + ".";
   });
-});
+})();
